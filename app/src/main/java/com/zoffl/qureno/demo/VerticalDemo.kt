@@ -1,19 +1,16 @@
 package com.zoffl.qureno.demo
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.view.View
 import android.widget.Button
-import android.widget.TextView
 import com.zoffl.qureno.app.BaseState
-import qureno.util.scopeActions
-import qureno.basic.verticalComponent
 import com.zoffl.qureno.demo.VerticalDemo.*
+import qureno.basic.verticalComponent
 import qureno.components.*
 import qureno.core.Action
 import qureno.core.Dispatch
 import qureno.util.background
+import qureno.util.scopeActions
 
 class VerticalDemo {
 
@@ -36,7 +33,7 @@ fun verticalDemoComponent(): Component<State> =
     )
 
 private fun buttonComponent(): Component<State> =
-    component(::create, View::update, State::reduce)
+    componentTyped(::create, Button::update, State::reduce)
 
 private fun State.reduce(action: Action): State =
     when (action) {
@@ -45,12 +42,10 @@ private fun State.reduce(action: Action): State =
         else -> this
     }
 
-@SuppressLint("SetTextI18n")
-private fun create(state: State, dispatch: Dispatch, context: Context): View =
+private fun create(state: State, dispatch: Dispatch, context: Context): Button =
     Button(context)
 
-private fun View.update(state: State, dispatch: Dispatch) {
-    require(this is TextView)
+private fun Button.update(state: State, dispatch: Dispatch) {
     text = if (state.counter2 == null) "Create 2nd counter" else "Delete 2nd counter"
     setOnClickListener {
         dispatch(if (state.counter2 == null) Show() else Hide())
