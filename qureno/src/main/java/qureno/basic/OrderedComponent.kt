@@ -44,7 +44,7 @@ inline fun <T> ViewNode.updateChildViewNode(state: T, action: Action, key: Any, 
             }
             if (new.view != null) {
                 group.addView(new.view, viewIndex)
-                new.applyLayoutParams?.invoke(new.view.layoutParams)
+                new.onViewAdded?.invoke()
             }
         }
         copy(children = children + (key to new))

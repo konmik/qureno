@@ -2,6 +2,7 @@ package com.zoffl.qureno.demo
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -12,6 +13,7 @@ import com.zoffl.qureno.demo.VerticalDemo.*
 import qureno.components.*
 import qureno.core.Action
 import qureno.core.Dispatch
+import qureno.util.background
 
 class VerticalDemo {
 
@@ -27,9 +29,9 @@ class VerticalDemo {
 
 fun verticalDemoComponent(): Component<State> =
     verticalComponent(
-        counterComponent().scopeActions(1).focus({ counter1 }, { copy(counter1 = it) }),
-        counterComponent().scopeActions(2).opt().focus({ counter2 }, { copy(counter2 = it) }),
-        counterComponent().scopeActions(3).focus({ counter3 }, { copy(counter3 = it) }),
+        counterComponent().scopeActions(1).background(Color.GREEN).focus({ counter1 }, { copy(counter1 = it) }),
+        counterComponent().scopeActions(2).background(Color.MAGENTA).opt().focus({ counter2 }, { copy(counter2 = it) }),
+        counterComponent().scopeActions(3).background(Color.CYAN).focus({ counter3 }, { copy(counter3 = it) }),
         buttonComponent()
     )
 

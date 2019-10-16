@@ -2,7 +2,6 @@ package qureno.components
 
 import android.content.Context
 import android.view.View
-import android.view.ViewGroup
 import qureno.core.Dispatch
 
 /**
@@ -14,9 +13,7 @@ data class ViewNode(
     val dispatch: Dispatch,
     val context: Context,
     val view: View? = null, // gets attached to parent node's view after recreation
-    val applyLayoutParams: ApplyLayoutParams? = null, // gets called after view attachment
+    val onViewAdded: (() -> Unit)? = null, // gets called after view gets added to parent ViewGroup
     val children: Map<Any, ViewNode> = mapOf(),
     val boundValue: Any? = null
 )
-
-typealias ApplyLayoutParams = ViewGroup.LayoutParams.() -> Unit

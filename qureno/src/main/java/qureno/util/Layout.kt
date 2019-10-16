@@ -1,27 +1,16 @@
 package qureno.util
 
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import qureno.components.*
+import qureno.components.Component
+import qureno.components.onViewAdded
 
 fun <T> Component<T>.matchParent(): Component<T> =
-    Component(reduce, updateNode, updateViewNode.withLayoutParams(matchParent))
+    Component(reduce, updateNode, updateViewNode.onViewAdded {
+        layoutParams.width = MATCH_PARENT
+        layoutParams.height = MATCH_PARENT
+    })
 
 fun <T> Component<T>.matchParentHeight(): Component<T> =
-    Component(reduce, updateNode, updateViewNode.withLayoutParams(matchParentHeight))
-
-private val matchParent: ApplyLayoutParams = {
-    width = MATCH_PARENT
-    height = MATCH_PARENT
-}
-
-private val matchParentHeight: ApplyLayoutParams = {
-    height = MATCH_PARENT
-}
-
-private fun <T> UpdateViewNode<T>.withLayoutParams(applyLayoutParams: ApplyLayoutParams): UpdateViewNode<T> =
-    { state, action ->
-        this@withLayoutParams(state, action)
-            .takeOr({ it.applyLayoutParams != null }) {
-                copy(applyLayoutParams = applyLayoutParams)
-            }
-    }
+    Component(reduce, updateNode, updateViewNode.onViewAdded {
+        layoutParams.height = MATCH_PARENT
+    })

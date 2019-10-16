@@ -1,6 +1,7 @@
 package qureno.components
 
 import qureno.core.Action
+import qureno.util.mapOfSingle
 import qureno.util.takeOr
 
 typealias UpdateNode<T> = Node.(state: T, action: Action) -> Node
@@ -27,7 +28,7 @@ fun <T> UpdateNode<T>.plusSubscribe(subscribe: Subscribe<T>): UpdateNode<T> =
         takeOr(old === new && unsubscribe === newUnsubscribe) {
             copy(
                 unsubscribe = newUnsubscribe,
-                children = mapOf(Unit to new)
+                children = mapOfSingle(Unit, new)
             )
         }
     }
@@ -44,7 +45,7 @@ fun <T : Any> UpdateNode<T>.opt(): UpdateNode<T?> =
         } else {
             val old = children[Unit]
             val new = this@opt(old ?: Node(dispatch), state, action)
-            takeOr(old === new) { copy(children = mapOf(Unit to new)) }
+            takeOr(old === new) { copy(children = mapOfSingle(Unit, new)) }
         }
     }
 

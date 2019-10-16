@@ -24,12 +24,12 @@ fun <T> Component<T>.scopeActions(tag: Any): Component<T> =
         updateNode = { state, action ->
             val old = children[Unit]
             val new = (old ?: Node(dispatch.wrap(tag))).updateNode(state, action.unwrap(tag))
-            takeOr(old === new) { copy(children = mapOf(Unit to new)) }
+            takeOr(old === new) { new.copy(dispatch = dispatch, children = mapOfSingle(Unit, new)) }
         },
         updateViewNode = { state, action ->
             val old = children[Unit]
             val new = (old ?: ViewNode(dispatch.wrap(tag), context)).updateViewNode(state, action.unwrap(tag))
-            takeOr(old === new) { copy(view = new.view, children = mapOf(Unit to new)) }
+            takeOr(old === new) { new.copy(dispatch = dispatch, children = mapOfSingle(Unit, new)) }
         }
     )
 

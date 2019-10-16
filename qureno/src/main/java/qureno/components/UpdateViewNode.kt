@@ -67,3 +67,17 @@ fun <T> UpdateViewNode<T>.skipCompareByValue(): UpdateViewNode<T> =
             }
         }
     }
+
+internal fun <T> UpdateViewNode<T>.onViewAdded(f: View.() -> Unit): UpdateViewNode<T> =
+    { state, action ->
+        val new = this@onViewAdded(state, action)
+        val newView = new.view
+        new.takeOr(newView == null || newView === view)  {
+            copy(onViewAdded = { onViewAdded?.invoke(); f(newView!!) })
+        }
+    }
+
+internal inline fun <T, reified V : View> UpdateViewNode<T>.onViewAddedTyped(noinline f: V.() -> Unit): UpdateViewNode<T> =
+    onViewAdded {
+        (this as V).f()
+    }
