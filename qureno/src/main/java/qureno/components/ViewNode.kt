@@ -11,9 +11,10 @@ import qureno.core.Dispatch
  */
 data class ViewNode(
     val dispatch: Dispatch,
-    val context: Context,
-    val view: View? = null, // gets attached to parent node's view after recreation
-    val onViewAdded: (() -> Unit)? = null, // gets called after view gets added to parent ViewGroup
+    val context: Context? = null,
+    val view: View? = null,
+    val onViewAdded: (() -> Unit)? = null,
     val children: Map<Any, ViewNode> = mapOf(),
+    val unsubscribe: Map<Any, Unsubscribe> = mapOf(),
     val boundValue: Any? = null
 )

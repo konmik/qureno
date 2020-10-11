@@ -12,12 +12,10 @@ typealias CreateViewGroup = (Context) -> ViewGroup
 fun <T> orderedViewGroupComponent(children: Array<out Component<T>>, create: CreateViewGroup): Component<T> {
 
     val reduces = children.map { it.reduce }
-    val updateNodeChildren = children.mapIndexed { index, component -> component.updateNode.focusChild(index) }
     val updateViewChildren = children.map { component -> component.updateViewNode }
 
     return component(
         reduce = combineReduce(reduces.toTypedArray()),
-        updateNode = combineUpdateNode(updateNodeChildren.toTypedArray()),
         updateViewNode = combineUpdateViewNode(updateViewChildren.toTypedArray(), create)
     )
 }
@@ -25,7 +23,7 @@ fun <T> orderedViewGroupComponent(children: Array<out Component<T>>, create: Cre
 private fun <T> combineUpdateViewNode(updates: Array<UpdateViewNode<T>>, create: CreateViewGroup): UpdateViewNode<T> =
     { state, action ->
         var viewIndex = 0
-        val groupNode = takeOr(view != null) { copy(view = create(context)) }
+        val groupNode = takeOr(view != null) { copy(view = context?.let(create)) }
         updates.foldIndexed(groupNode) { key, acc, update ->
             acc.updateChildViewNode(state, action, key, update, viewIndex).also {
                 if (it.view != null) viewIndex++

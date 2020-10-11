@@ -29,6 +29,6 @@ inline fun <T, reified V : View> componentTyped(
 ): Component<T> =
     component(
         reduce = reduce,
-        updateNode = effect?.let(::effectToUpdateNode),
         updateViewNode = updateViewNodeTyped(create, update, viewEffect)
+            .plusEffect(effect ?: emptyEffect())
     )

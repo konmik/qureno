@@ -5,12 +5,12 @@ import qureno.components.Component
 import qureno.components.onViewAdded
 
 fun <T> Component<T>.matchParent(): Component<T> =
-    Component(reduce, updateNode, updateViewNode.onViewAdded {
+    Component(reduce, updateViewNode.onViewAdded {
         layoutParams.width = MATCH_PARENT
         layoutParams.height = MATCH_PARENT
     })
 
 fun <T> Component<T>.matchParentHeight(): Component<T> =
-    Component(reduce, updateNode, updateViewNode.onViewAdded {
+    Component(reduce, updateViewNode.onViewAdded {
         layoutParams.height = MATCH_PARENT
     })

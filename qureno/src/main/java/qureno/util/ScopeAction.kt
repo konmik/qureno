@@ -1,7 +1,6 @@
 package qureno.util
 
 import qureno.components.Component
-import qureno.components.Node
 import qureno.components.ViewNode
 import qureno.core.Action
 import qureno.core.Dispatch
@@ -20,11 +19,6 @@ fun <T> Component<T>.scopeActions(tag: Any): Component<T> =
     Component(
         reduce = { action ->
             reduce(action.unwrap(tag))
-        },
-        updateNode = { state, action ->
-            val old = children[Unit]
-            val new = (old ?: Node(dispatch.wrap(tag))).updateNode(state, action.unwrap(tag))
-            takeOr(old === new) { new.copy(dispatch = dispatch, children = mapOfSingle(Unit, new)) }
         },
         updateViewNode = { state, action ->
             val old = children[Unit]

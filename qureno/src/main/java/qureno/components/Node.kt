@@ -3,19 +3,19 @@ package qureno.components
 import qureno.core.Dispatch
 import qureno.util.takeOr
 
-data class Node(
-    val dispatch: Dispatch,
-    val unsubscribe: Unsubscribe? = null,
-    val children: Map<Any, Node> = mapOf()
-)
-
 typealias Subscribe<T> = (state: T, dispatch: Dispatch) -> Unsubscribe
 
 typealias Unsubscribe = () -> Unit
 
-fun Node.dispose(): Node =
-    takeOr(unsubscribe == null && children.isEmpty()) {
-        children.values.forEach { it.dispose() }
-        unsubscribe?.invoke()
-        copy(children = mapOf(), unsubscribe = null)
+fun ViewNode.disposed(): ViewNode =
+    takeOr(unsubscribe.isEmpty() && children.isEmpty()) {
+        children.values.forEach { it.disposed() }
+        unsubscribe.values.forEach { it() }
+        copy(unsubscribe = mapOf(), children = mapOf())
+    }
+
+fun ViewNode.disposedView(): ViewNode =
+    takeOr(view == null && children.isEmpty()) {
+        children.mapValues { (_, value) -> value.disposedView() }
+        copy(view = null)
     }

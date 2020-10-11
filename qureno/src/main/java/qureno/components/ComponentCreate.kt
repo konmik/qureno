@@ -28,17 +28,15 @@ fun <T> component(
 ): Component<T> =
     component(
         reduce = reduce,
-        updateNode = effect?.let(::effectToUpdateNode),
         updateViewNode = updateViewNode(create, update, viewEffect)
+            .plusEffect(effect ?: emptyEffect())
     )
 
 fun <T> component(
     reduce: Reduce<T>? = null,
-    updateNode: UpdateNode<T>? = null,
     updateViewNode: UpdateViewNode<T>? = null
 ): Component<T> =
     Component(
         reduce = reduce ?: emptyReduce(),
-        updateNode = updateNode ?: emptyUpdateNode(),
         updateViewNode = updateViewNode ?: emptyUpdateViewNode()
     )
